@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>toast notifaction</title>
+    <script src="https://kit.fontawesome.com/aed6434f35.js" crossorigin="anonymous"></script> 
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        body{
+            background-color: rgb(241, 241, 241);
+            padding: 10px;
+        }
+
+        button{
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            background-color: rgb(19, 19, 19);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .toast-area{
+            position: absolute;
+            overflow: hidden;
+            right: 0;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .toast{
+            width: 400px;
+            height: 70px;
+            margin: 10px 0;
+            transform: translateX(100%);
+            display: flex;
+            align-items:center;
+            background-color: white;
+             background-color: rgba(0, 128, 0, 0.205);
+             position: relative;
+             transition: .2s ease-in-out;
+        }
+
+        .toast i{
+            margin: 0 20px;
+            color:green;
+            font-size: 25px;
+           
+        }
+
+        .toast::after{
+            content: '';
+            position: absolute;
+            width:100%;
+            height: 5px;
+            background: green;
+            bottom: 0;
+            animation: animate 6s linear forwards;
+        }
+        .display{
+            transform: translateX(0%);
+        }
+        @keyframes animate{
+            100%{
+                width: 0%;
+            }
+        }
+        .toast.error::after{
+            background: red;
+        }
+        .toast.pending::after{
+            background: orange;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="buttons">
+        <button onclick="showToast(successmsg)">success</button>
+        <button onclick="showToast(errormsg)" >error</button>
+        <button onclick="showToast(pendingmsg)">pending</button>
+    </div>
+
+    <div class="toast-area">
+
+    </div>
+
+
+    <script>
+        let toastBox = document.querySelector('.toast-area')
+
+        let errormsg = `<i class="fa-solid fa-circle-exclamation"></i> error something is wrong`
+        let successmsg = ` <i class="fa-solid fa-paper-plane"></i> succesfully submitted`
+        let pendingmsg =`<i class="fa-solid fa-spinner"></i> still pending...`
+
+
+
+        function showToast(msg){
+            let toast = document.createElement('div');
+            toast.classList.add('toast');
+            toast.innerHTML = msg
+            toastBox.appendChild(toast)
+
+            setTimeout(()=>{
+                toast.classList.add('display')
+            },100)
+
+            if(msg.includes('error')){
+                toast.style.backgroundColor = 'rgb(255, 179, 179)';
+                toast.querySelector('i').style.color = 'red'
+                toast.classList.add('error')
+
+            }
+            if(msg.includes('pending')){
+                toast.style.backgroundColor = 'rgb(255, 223, 179)';
+                toast.querySelector('i').style.color = 'orange'
+                toast.querySelector('i').classList.add('fa-spin')
+                  toast.classList.add('pending')
+            }
+
+
+            setTimeout(()=>{
+                toast.remove()
+            },6000)
+        }
+    </script>
+</body>
+</html>
